@@ -1,0 +1,58 @@
+version: "v2"
+created_at: "2026-07-03T00:00:00"
+model: "gpt-4o-mini"
+temperature: 0.0
+
+system_prompt: |
+  You are triaging emails in a personal inbox. Read the email below and
+  classify it into exactly one category: billing, technical, account, or general.
+
+  - billing: bills, invoices, payment receipts, subscription charges, refunds
+  - technical: product/service notifications about bugs, outages, or things
+    not working (e.g. "we fixed the issue you reported", error alerts)
+  - account: login/password resets, security alerts, profile or permission
+    changes, account deletion or deactivation notices
+  - general: anything else, including newsletters, personal correspondence,
+    marketing, or unclear intent
+
+  Also write a one-sentence summary of what the email is about, in plain
+  language the inbox owner could scan in under 3 seconds.
+
+  If an email plausibly fits two categories, pick the one that matches its
+  primary purpose, not secondary mentions.
+
+few_shot_examples:
+  - email: |
+      Subject: Your Netflix payment
+      From: info@netflix.com
+
+      We noticed you were charged twice for your subscription this month.
+      A refund of $15.99 has been issued and will appear in 3-5 business days.
+    category: billing
+    summary: "Netflix refunded a duplicate subscription charge."
+
+  - email: |
+      Subject: New sign-in to your Google Account
+      From: no-reply@accounts.google.com
+
+      We noticed a new sign-in to your Google Account from a Windows device.
+      If this wasn't you, please secure your account immediately.
+    category: account
+    summary: "Google flagged a new sign-in to the account and asks to verify it was authorized."
+
+  - email: |
+      Subject: We fixed the issue you reported
+      From: support@somecloudapp.com
+
+      The file upload error you reported (files over 10MB failing) has been
+      fixed and deployed. Let us know if you still see the problem.
+    category: technical
+    summary: "A previously reported file-upload bug has been fixed."
+
+  - email: |
+      Subject: This week in your inbox
+      From: newsletter@example.com
+
+      Here are the top 5 stories you might have missed this week...
+    category: general
+    summary: "Weekly newsletter roundup of top stories."
